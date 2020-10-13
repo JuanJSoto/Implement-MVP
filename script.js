@@ -3,7 +3,7 @@
 var key ='9nhcxVL4VrdhKROjUC86WCom3OYLr5gQW5LZk50A6K0xZu4YA7'
 var secret =  'RIDQqA66hFUvBT9VrgShe8PjEeUIiXtzzuUTH9GV'
 // Call details
-var locationA = '#zip';
+//var locationA = '#zip';
 var status = 'adoptable';
 
 const petForm = document.querySelector('#pet-form');
