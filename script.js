@@ -3,18 +3,20 @@
 var key ='9nhcxVL4VrdhKROjUC86WCom3OYLr5gQW5LZk50A6K0xZu4YA7'
 var secret =  'RIDQqA66hFUvBT9VrgShe8PjEeUIiXtzzuUTH9GV'
 // Call details
-//var locationA = '#zip';
+//var locationA = 'ri77'; don't really need?
 var status = 'adoptable';
 
 const petForm = document.querySelector('#pet-form');
 petForm.addEventListener('submit', fetchAnimals);
 
 //Fetch Animals From API
-function fetchAnimals(e) {
-  e.preventDefault();
+function fetchAnimals() {
+  console.log(fetchAnimals);
+  //e.preventDefault();
   //Get User Input
   var a = document.getElementById("animal");  
-  const animal = a.options[a.selectedIndex].value;
+  //const animal = a.options[a.selectedIndex].value;
+  const animal = $('#animal').val();
   const zip = document.getElementById('zip').value;
 
 
@@ -36,13 +38,21 @@ fetch('https://api.petfinder.com/v2/oauth2/token', {
 
 	// Return a second API call
 	// This one uses the token we received for authentication
-	return fetch('https://api.petfinder.com/v2/animals?location=' + zip + '&status=' + status, {
+	return fetch('https://api.petfinder.com/v2/animals?type=' + animal + '&location=' + zip + '&status=' + status, {
 		headers: {
 			'Authorization': data.token_type + ' ' + data.access_token,
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	});
-
+}).then(response => {
+  if(response.ok) {
+    return response.json();
+  }
+  throw new Error(response.statusText);
+})
+.then(responseJson => displayResults(responseJson))
+.catch(error => alert('Something went wrong. Try again later.'));
+/*
 }).then(function (resp) {
 
 	// Return the API response as JSON
@@ -60,9 +70,10 @@ fetch('https://api.petfinder.com/v2/oauth2/token', {
 
 });
 };
-
+*/
 
 //Show Listings of Pets
+/*
 function showAnimals(pets) {
   const results = document.querySelector('#results');
   //Clear First
@@ -82,3 +93,33 @@ function showAnimals(pets) {
     
   });
 }
+*/
+}
+function displayResults(responseJson) {
+  console.log(JSON.stringify(responseJson.animals));
+  let html = '';
+  for (let i=0; i<responseJson.animals.length; i++) {
+    if (responseJson.animals[i].photos.length > 0) {
+      html += `<img src="${responseJson.animals[i].photos[0].small}" /><br/><p>${responseJson.animals[i].contact.email}</p>`
+    }
+  }
+  $('#results').empty();
+  $('#results').html(html);
+  //empty(); moved down one here from $('results').empty();
+  //$('results').append(`<img src="${responseJson.animals}" alt='adoptable pets'`);
+}
+
+function watchForm() {
+  console.log(watchForm);
+  $('form').submit(event => {
+    event.preventDefault();
+    $('.results').removeClass('hidden');
+    fetchAnimals();
+  })
+}
+
+
+$(function() {
+  console.log('App loaded! Waiting for submit!');
+  watchForm();
+})
