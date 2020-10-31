@@ -12,7 +12,7 @@ function weatherAPI() {
 
 function displayWeather(resJson) {
   $('#weatherResults').empty(); 
-  $('#weatherResults').append(`<div id='weatherResults'> <p>${resJson.location.name}</p> <p>${resJson.current.temp_f}</p> </div>`); 
+  $('#weatherResults').append(`<div id='weatherResults'> <p>City: ${resJson.location.name}</p> <p>State: ${resJson.location.region}</p> <p>Current temperature: ${resJson.current.temp_f}</p> </div>`); 
 }
 //credentials
 var key ='9nhcxVL4VrdhKROjUC86WCom3OYLr5gQW5LZk50A6K0xZu4YA7'
