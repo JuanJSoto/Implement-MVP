@@ -1,5 +1,7 @@
 function weatherAPI() { 
-  fetch('https://api.weatherapi.com/v1/current.json?key=181f464706d1481aa83145425202210&q=19139' + zip + '&day=1' 
+  weatherKey = '181f464706d1481aa83145425202210';
+  //location = zip;
+  fetch('https://api.weatherapi.com/v1/current.json?key=' + weatherKey + '&q=' + zip + '&day=1' 
   ).then(response => { 
     if(response.ok) { 
       return response.json(); 
@@ -25,7 +27,7 @@ petForm.addEventListener('submit', fetchAnimals);
 function fetchAnimals() {
   var a = document.getElementById("animal");  
   const animal = $('#animal').val();
-  const zip = document.getElementById('zip').value;
+  zip = document.getElementById('zip').value;
 
 
   fetch('https://api.petfinder.com/v2/oauth2/token', {
@@ -86,5 +88,6 @@ function watchForm() {
 }
 
 $(function() {
+  console.log('App loaded! Waiting for submit!');
   watchForm();
 })
